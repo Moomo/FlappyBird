@@ -25,6 +25,8 @@ public class GameRoot : MonoBehaviour
 	[SerializeField]
 	private PipeFactory _pipeFactory;
 	[SerializeField]
+	private TapToStart _tapToStart;
+	[SerializeField]
 	private RawImageUVScroll _uvScroll;
 	/// <summary>
 	/// The state.
@@ -41,6 +43,7 @@ public class GameRoot : MonoBehaviour
 		_flappyBird.Initialize (OnCollisionEnter);
 		_pipeFactory.Initialize ();
 		_uvScroll.Initialize ();
+		_tapToStart.Initialize ();
 		_state.Value = GameState.READY;
 		//Stateを監視
 		_state.Subscribe (state => {
@@ -77,6 +80,7 @@ public class GameRoot : MonoBehaviour
 			_uvScroll.GameStart ();
 			_flappyBird.GameStart ();
 			_flappyBird.Jump ();
+			_tapToStart.Hide ();
 			break;
 		case GameState.GAME:
 			_flappyBird.Jump ();
