@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using DG.Tweening;
 
 public class FlappyBird : MonoBehaviour
 {
@@ -38,7 +39,21 @@ public class FlappyBird : MonoBehaviour
 	public void Jump ()
 	{
 		_rigidBody.velocity = Vector3.up * _addForceY;
+		transform.DOLocalRotate (new Vector3 (0, 0, 30f), 0.5f);
 		Debug.Log ("jump");
+	}
+
+	private void Update ()
+	{
+		if (_rigidBody.velocity.y < 0) {
+			float currentAngleZ = transform.localEulerAngles.z;
+			float addAngleZ = _rigidBody.velocity.y * 0.1f;
+			float resultAngleZ = currentAngleZ + addAngleZ;
+			if (resultAngleZ < 270f && currentAngleZ > 270f) {
+				return;
+			}
+			transform.localRotation = Quaternion.Euler (0, 0, resultAngleZ);
+		}
 	}
 
 	/// <summary>
