@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;
+using System;
 
 public class PipeFactory : MonoBehaviour
 {
@@ -45,13 +46,19 @@ public class PipeFactory : MonoBehaviour
 	private bool isStart;
 
 	/// <summary>
+	/// The on trigger enter handler.
+	/// </summary>
+	private Action _onTriggerEnterHandler;
+
+	/// <summary>
 	/// Initialize this instance.
 	/// </summary>
-	public void Initialize ()
+	public void Initialize (Action onTriggerEnterHander)
 	{
 		_time = 0;
 		isStart = false;
 		_pipeList = new List<Pipe> ();
+		_onTriggerEnterHandler = onTriggerEnterHander;
 	}
 
 	/// <summary>
@@ -75,8 +82,9 @@ public class PipeFactory : MonoBehaviour
 	public void ShowPipe ()
 	{
 		Pipe p = CreatePipe ();
+		p.Initialize (_onTriggerEnterHandler);
 		p.transform.SetParent (transform, false);
-		p.transform.localPosition = new Vector3 (0f, Random.Range (-_heightMargin, _heightMargin)); 
+		p.transform.localPosition = new Vector3 (0f, UnityEngine.Random.Range (-_heightMargin, _heightMargin)); 
 		p.transform.DOLocalMoveX (-400f, _moveDuration).SetEase (Ease.Linear).OnComplete (() => {
 			p.gameObject.SetActive (false);
 		});

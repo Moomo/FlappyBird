@@ -28,6 +28,8 @@ public class GameRoot : MonoBehaviour
 	private TapToStart _tapToStart;
 	[SerializeField]
 	private RawImageUVScroll _uvScroll;
+	[SerializeField]
+	private Score _score;
 	/// <summary>
 	/// The state.
 	/// </summary>
@@ -41,9 +43,10 @@ public class GameRoot : MonoBehaviour
 		_state = new ReactiveProperty<GameState> ();
 		_screenTap.Initialize (OnScreenTap);	
 		_flappyBird.Initialize (OnCollisionEnter);
-		_pipeFactory.Initialize ();
+		_pipeFactory.Initialize (OnTriggerEnter);
 		_uvScroll.Initialize ();
 		_tapToStart.Initialize ();
+		_score.Initialize ();
 		_state.Value = GameState.READY;
 		//Stateを監視
 		_state.Subscribe (state => {
@@ -66,6 +69,14 @@ public class GameRoot : MonoBehaviour
 		_state.Value = GameState.OVER;
 		_pipeFactory.GameOver ();
 		_uvScroll.GameOver ();
+	}
+
+	/// <summary>
+	/// Raises the trigger enter event.
+	/// </summary>
+	private void OnTriggerEnter ()
+	{
+		_score.Up ();
 	}
 
 	/// <summary>
