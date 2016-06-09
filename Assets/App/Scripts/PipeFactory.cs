@@ -76,7 +76,7 @@ public class PipeFactory : MonoBehaviour
 	{
 		Pipe p = CreatePipe ();
 		p.transform.SetParent (transform, false);
-		p.transform.localPosition = new Vector3 (0f, _heightMargin * Mathf.Sin (Time.time)); 
+		p.transform.localPosition = new Vector3 (0f, Random.Range (-_heightMargin, _heightMargin)); 
 		p.transform.DOLocalMoveX (-400f, _moveDuration).SetEase (Ease.Linear).OnComplete (() => {
 			p.gameObject.SetActive (false);
 		});
